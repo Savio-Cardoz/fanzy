@@ -49,8 +49,7 @@ void host_comm_process_request(comm_cmd_t cmd, uint8_t *pData, uint32_t nDataLen
         // Logger_DEBUG("CMD_FAN_ALL_GET_RPM");
         for (uint8_t i = 0; i < NUM_TOTAL_FAN; i++)
         {
-            rpm = 500;
-            // fan_control_read_fan_rpm(i, &rpm);
+            fan_control_read_fan_rpm(i, &rpm);
             response_add_byte(i);
             response_add_chr(':');
             response_add_u16(rpm);
@@ -63,8 +62,7 @@ void host_comm_process_request(comm_cmd_t cmd, uint8_t *pData, uint32_t nDataLen
 
     case CMD_FAN_GET_RPM:
         // Logger_DEBUG("CMD_FAN_GET_RPM");
-        rpm = 500;
-        // fan_control_read_fan_rpm(pData[0], &rpm);
+        fan_control_read_fan_rpm(pData[0], &rpm);
         response_add_byte(pData[0]);
         response_add_chr(':');
         response_add_u16(rpm);
@@ -72,7 +70,7 @@ void host_comm_process_request(comm_cmd_t cmd, uint8_t *pData, uint32_t nDataLen
 
     case CMD_FAN_SET_PWM:
         // Logger_DEBUG("CMD_FAN_SET_PWM");
-        // fan_control_set_fan_pwm(pData[0], pData[1]);
+        fan_control_set_fan_pwm(pData[0], pData[1]);
         response_add_byte(pData[0]);
         response_add_chr(':');
         response_add_byte(pData[1]);
@@ -80,14 +78,14 @@ void host_comm_process_request(comm_cmd_t cmd, uint8_t *pData, uint32_t nDataLen
 
     case CMD_FAN_SET_ALL_PWM:
         // Logger_DEBUG("CMD_FAN_SET_PWM");
-        // fan_control_set_all_pwm(pData[0]);
+        fan_control_set_all_pwm(pData[0]);
         response_add_byte(pData[0]);
         break;
 
     case CMD_FAN_SET_RPM:
         rpm = (pData[1] << 8) | pData[2];
         // Logger_DEBUG("CMD_FAN_SET_RPM");
-        // fan_control_set_fan_rpm(pData[0], rpm);
+        fan_control_set_fan_rpm(pData[0], rpm);
         response_add_byte(pData[0]);
         response_add_chr(':');
         response_add_byte(pData[1]);

@@ -5,6 +5,7 @@
 #include <tusb.h>
 #include "usb_cdc.h"
 #include "host_communication.h"
+#include "fan_control.h"
 
 bool led_state = false;
 
@@ -19,21 +20,24 @@ int main()
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
 
+    fan_control_init();
     host_comm_init();
 
     // Setup systick timer
     repeating_timer_t timer;
     // negative timeout means exact delay (rather than delay between callbacks)
-    if (!add_repeating_timer_us(-500000, systick_callback, NULL, &timer))
-    {
-        gpio_put(LED_PIN, 1);
-        return 1;
-    }
+    // if (!add_repeating_timer_us(-500000, systick_callback, NULL, &timer))
+    // {
+    //     gpio_put(LED_PIN, 1);
+    //     return 1;
+    // }
+
     while (true)
     {
         usb_cdc_tick();
-
+        fan_periodic_tick();
         host_comm_tick();
+        tight_loop_contents();
     }
 }
 

@@ -38,18 +38,17 @@ pico_sdk_init()
 add_executable(fanzy main.c
     ${CMAKE_CURRENT_LIST_DIR}/usb_descriptors.c
     ${CMAKE_CURRENT_LIST_DIR}/usb_cdc.c
-    ${CMAKE_CURRENT_LIST_DIR}/host_communication.c)
+    ${CMAKE_CURRENT_LIST_DIR}/host_communication.c
+    ${CMAKE_CURRENT_LIST_DIR}/fan_control.c
+)
 
 pico_set_program_name(fanzy "fanzy")
 pico_set_program_version(fanzy "0.1")
 
-# Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(fanzy 0)
-pico_enable_stdio_usb(fanzy 0)
-
 # Add the standard library to the build
 target_link_libraries(fanzy
         pico_stdlib
+        hardware_pwm
         tinyusb_device
         tinyusb_board)
 
@@ -59,4 +58,3 @@ target_include_directories(fanzy PRIVATE
 )
 
 pico_add_extra_outputs(fanzy)
-

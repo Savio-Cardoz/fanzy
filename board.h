@@ -12,6 +12,7 @@
 #include <pico/stdlib.h>
 
 #define LED_PIN 25
+#define TACHO_PIN_FAN_1 15
 
 static inline uint32_t Board_GetTick(void)
 {
